@@ -9,143 +9,102 @@ const Personnel = ({ apprenant }: { apprenant: Apprenant }) => {
             <div className="grid grid-cols-2 gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  اسم الجمعية
+                  الاسم العائلي
                 </label>
                 <input
                   type="text"
-                  name=""
+                  name="nom"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="اسم الجمعية"
+                  value={apprenant.nom || ""}
+                  placeholder="الاسم العائلي"
                   required
                 />
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  اسم الرئيس
+                  الاسم الشخصي
                 </label>
                 <input
                   type="text"
-                  name=""
+                  name="prenom"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="اسم الرئيس"
+                  value={apprenant.prenom || ""}
+                  placeholder="الاسم الشخصي"
                   required
                 />
               </div>
 
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  رقم هاتف الرئيس
-                </label>
-                <input
-                  type="tel"
-                  name=""
-                  id=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="رقم هاتف الرئيس"
-                  required
-                />
-              </div>
-              <div className="w-full">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  البريد الكتروني للرئيس
-                </label>
-                <input
-                  type="email"
-                  name=""
-                  id=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="البريد الكتروني للرئيس"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  العنوان
+                  العنوان الشخصي
                 </label>
                 <input
                   type="text"
-                  name=""
+                  name="adresse"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="العنوان"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  مدة صلاحية المكتب
-                </label>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="مدة صلاحية المكتب"
+                  value={apprenant.adresse || ""}
+                  placeholder="العنوان الشخصي"
                   required
                 />
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  تاريخ آخر جمع عام
+                  تاريخ الازدياد
                 </label>
                 <input
                   type="date"
-                  name=""
+                  name="dateNaissance"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="تاريخ آخر جمع عام"
+                  value={apprenant.dateNaissance || ""}
+                  placeholder="تاريخ الازدياد"
                   required
                 />
               </div>
-              <div className="w-full">
+              <div>
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  المبلغ المقترح
-                </label>
-                <input
-                  type="number"
-                  name=""
-                  id=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="المبلغ المقترح"
-                  required
-                />
-              </div>
-              <div className="w-full">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  تعريف الحساب البنكي
+                  الحالة العائلية
                 </label>
                 <input
                   type="text"
-                  name=""
+                  name="situationFamilial"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value=""
-                  placeholder="تعريف الحساب البنكي"
+                  value={apprenant.situationFamilial || ""}
+                  placeholder="الحالة العائلية"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  رقم بطاقة الهوية الوطنية
+                </label>
+                <input
+                  type="text"
+                  name="cin"
+                  id=""
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={apprenant.cin || ""}
+                  placeholder="رقم بطاقة الهوية الوطنية"
                   required
                 />
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  الإقليم
+                  البريد الإلكتروني
                 </label>
-                <select
+                <input
+                  type="email"
+                  name="email"
                   id=""
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                >
-                  <option selected>الأقاليم</option>
-                  <option value=""></option>
-                  <option value=""></option>
-                </select>
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={apprenant.email || ""}
+                  placeholder="البريد الإلكتروني"
+                  required
+                />
               </div>
             </div>
             <div className="flex justify-start items-end gap-3">
@@ -171,7 +130,7 @@ const Personnel = ({ apprenant }: { apprenant: Apprenant }) => {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                حذف الجمعية
+                حذف المتدرب
               </button>
             </div>
           </form>

@@ -1,23 +1,29 @@
 import { Province } from "./Province";
 
 export type Apprenant = {
-  id: number | null;
-  nom: string | null;
-  prenom: string | null;
-  dateNaissance: string | null;
-  adresse: string | null;
-  situationFamilial: string | null;
-  cin: string | null;
-  email: string | null;
-  nomUniversite: string | null;
-  adresseUniversite: string | null;
-  specialite: string | null;
-  assure: boolean | null;
-  attestationsAssurance: File | null;
-  dateDebutFormation: string | null;
-  dateFinFormation: string | null;
-  province: Province | null;
-  demande: File | null;
+  id?: number | null;
+  nom?: string | null;
+  prenom?: string | null;
+  dateNaissance?: string | null;
+  adresse?: string | null;
+  situationFamilial?: string | null;
+  cin?: string | null;
+  email?: string | null;
+  nomUniversite?: string | null;
+  adresseUniversite?: string | null;
+  specialite?: string | null;
+  assure?: boolean | null;
+  attestationsAssurance?: File | null;
+  dateDebutFormation1?: string | null;
+  dateFinFormation1?: string | null;
+  province1?: Province | null;
+  dateDebutFormation2?: string | null;
+  dateFinFormation2?: string | null;
+  province2?: Province | null;
+  dateDebutFormation3?: string | null;
+  dateFinFormation3?: string | null;
+  province3?: Province | null;
+  demande?: File | null;
 };
 
 export const apprenants: Apprenant[] = [
@@ -35,9 +41,9 @@ export const apprenants: Apprenant[] = [
     specialite: "Génie Logiciel",
     assure: false,
     attestationsAssurance: null,
-    dateDebutFormation: "2022-01-15",
-    dateFinFormation: "2022-06-15",
-    province: {
+    dateDebutFormation1: "2022-01-15",
+    dateFinFormation1: "2022-06-15",
+    province1: {
       id: 2,
       name: "Rabat",
       region: {
@@ -61,9 +67,9 @@ export const apprenants: Apprenant[] = [
     specialite: "Informatique",
     assure: true,
     attestationsAssurance: null,
-    dateDebutFormation: "2021-10-01",
-    dateFinFormation: "2021-10-01",
-    province: {
+    dateDebutFormation1: "2021-10-01",
+    dateFinFormation1: "2021-10-01",
+    province1: {
       id: 1,
       name: "Tanger",
       region: {
@@ -87,9 +93,9 @@ export const apprenants: Apprenant[] = [
     specialite: "Biologie",
     assure: true,
     attestationsAssurance: null,
-    dateDebutFormation: "2019-09-01",
-    dateFinFormation: "2023-06-30",
-    province: {
+    dateDebutFormation1: "2019-09-01",
+    dateFinFormation1: "2023-06-30",
+    province1: {
       id: 5,
       name: "Fès",
       region: {
@@ -113,9 +119,9 @@ export const apprenants: Apprenant[] = [
     specialite: "Littérature Française",
     assure: false,
     attestationsAssurance: null,
-    dateDebutFormation: "2012-09-01",
-    dateFinFormation: "2016-06-30",
-    province: {
+    dateDebutFormation1: "2012-09-01",
+    dateFinFormation1: "2016-06-30",
+    province1: {
       id: 7,
       name: "Tanger",
       region: {
