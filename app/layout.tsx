@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Rubik } from "next/font/google";
+import ReactQueryProvider from "./components/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const font = Rubik({
@@ -19,8 +20,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl">
-      <body className={font.className}>{children}</body>
-    </html>
+    <ReactQueryProvider>
+      <html lang="ar" dir="rtl">
+        <body className={font.className}>{children}</body>
+      </html>
+    </ReactQueryProvider>
   );
 }

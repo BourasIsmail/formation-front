@@ -1,0 +1,31 @@
+import { Province } from "./Province";
+
+export type Stagiaire = {
+  id?: number | null;
+  nom?: string | null;
+  prenom?: string | null;
+  dateNaissance?: string | null;
+  adresse?: string | null;
+  situationFamilial?: string | null;
+  cin?: string | null;
+  email?: string | null;
+  nomUniversite?: string | null;
+  adresseUniversite?: string | null;
+  specialite?: string | null;
+  assure?: boolean | null;
+  attestationsAssurance?: File | null;
+  fileNameAssurance?: string | null;
+  fileTypeAssurance?: string | null;
+  dateDebutFormation1?: string | null;
+  dateFinFormation1?: string | null;
+  province1?: Province | null;
+  dateDebutFormation2?: string | null;
+  dateFinFormation2?: string | null;
+  province2?: Province | null;
+  dateDebutFormation3?: string | null;
+  dateFinFormation3?: string | null;
+  province3?: Province | null;
+  demande?: File | null;
+  fileNameDemande?: string | null;
+  fileTypeDemande: string | null;
+};

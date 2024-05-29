@@ -13,9 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader";
-import { Apprenant } from "../data/apprenants";
-
-export const columns: ColumnDef<Apprenant>[] = [
+import { Stagiaire } from "../type/Stagiaire";
+export const columns: ColumnDef<Stagiaire>[] = [
   {
     accessorKey: "nom",
     header: ({ column }) => (

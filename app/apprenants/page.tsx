@@ -3,15 +3,17 @@ import { BreadCrumb } from "../components/BreadCrumb";
 import { DataTable } from "@/components/ui/data-table";
 import { Apprenant, apprenants } from "../data/apprenants";
 import { columns } from "./columns";
+import { getAllStagiaires, getStagiaires } from "../api/stagiaire";
+import { useQuery } from "react-query";
+import { Stagiaire } from "../type/Stagiaire";
 
-async function getData(): Promise<Apprenant[]> {
+async function getData(): Promise<Stagiaire[]> {
   // Fetch data from your API here.
-  return apprenants;
+  return await getStagiaires();
 }
 
 export default async function () {
   const data = await getData();
-
   return (
     <>
       <SideBar />
