@@ -1,12 +1,58 @@
-import { Apprenant } from "../data/apprenants";
+"use client";
+import { useState } from "react";
+import { Stagiaire } from "../type/Stagiaire";
+import { toast } from "@/components/ui/use-toast";
+import { api } from "../api";
+import { Region } from "../type/Region";
+import { getProvinceByRegion } from "../api/province";
+import { useQuery } from "react-query";
+import { getALLRegions } from "../api/region";
 
-const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
+const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
+  const [selectedValue, setselectedValue] = useState<Stagiaire>(stagiaire);
+  const [selectedRegion, setselectedRegion] = useState<Region>();
+
+  const { data: regions } = useQuery({
+    queryKey: ["regions"],
+    queryFn: () => getALLRegions(),
+  });
+
+  const { data: provinces } = useQuery({
+    queryKey: ["provinces"],
+    queryFn: () => getProvinceByRegion(selectedRegion?.id as number),
+    enabled: !!selectedRegion?.id,
+  });
+
+  const handleSubmit = (e: any) => {
+    try {
+      e.preventDefault();
+      console.log(selectedValue);
+      const response = api
+        .put(`/stagiaire/updateFormation/${selectedValue?.id}`, selectedValue)
+        .then((res) => {
+          console.log(response);
+        });
+      toast({
+        description: "تم تحديث البيانات بنجاح",
+        className: "bg-green-500 text-white",
+        duration: 3000,
+        title: "نجاح",
+      });
+    } catch (error) {
+      toast({
+        description: "اسم مستخدم أو كلمة مرور غير صحيحة",
+        variant: "destructive",
+        duration: 3000,
+        title: "خطأ",
+      });
+    }
+  };
   return (
     <>
       <div className="p-2 border-2 border-gray-200 rounded-lg dark:border-gray-700">
         <section className="bg-white dark:bg-gray-900">
           <div className=" px-4 py-2 mx-auto lg:py-2">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                 <div className="w-full col-span-2">
                   <h1 className="block mb-2 text-xl font-medium text-gray-900 dark:text-white">
@@ -19,10 +65,16 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                   </label>
                   <input
                     type="date"
-                    name="dateDebutFormation"
+                    name="dateDebut1"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.dateDebutFormation1 || ""}
+                    value={selectedValue.dateDebut1 || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        dateDebut1: e.target.value || "",
+                      })
+                    }
                     placeholder="تاريخ بداية التدريب"
                     required
                   />
@@ -33,10 +85,16 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                   </label>
                   <input
                     type="date"
-                    name="dateFinFormation"
+                    name="dateFin1"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.dateFinFormation1 || ""}
+                    value={selectedValue.dateFin1 || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        dateFin1: e.target.value || "",
+                      })
+                    }
                     placeholder="تاريخ نهاية التدريب"
                     required
                   />
@@ -48,11 +106,22 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                     </label>
                     <select
                       name="region"
+                      onChange={(value) => {
+                        setselectedRegion({
+                          ...selectedRegion,
+                          id: Number(value.target.value),
+                          name: value.target.value.toString(),
+                        });
+                      }}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option selected>الجهة </option>
+                      <option selected>
+                        {selectedValue.province1?.region.name}
+                      </option>
 
-                      <option value="test">test</option>
+                      {regions?.map((region) => (
+                        <option value={region.id}>{region.name}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -62,12 +131,23 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                       الإقليم
                     </label>
                     <select
-                      name="province"
+                      name="province1"
+                      onChange={(e) =>
+                        setselectedValue({
+                          ...selectedValue,
+                          province1:
+                            provinces?.find(
+                              (item) => item.id === Number(e.target.value)
+                            ) || undefined,
+                        })
+                      }
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option selected>الإقليم </option>
+                      <option selected>{selectedValue.province1?.name}</option>
 
-                      <option value="a">test</option>
+                      {provinces?.map((province) => (
+                        <option value={province.id}>{province.name}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -82,10 +162,16 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                   </label>
                   <input
                     type="date"
-                    name="dateDebutFormation"
+                    name="dateDebut2"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.dateDebutFormation2 || ""}
+                    value={selectedValue.dateDebut2 || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        dateDebut2: e.target.value || "",
+                      })
+                    }
                     placeholder="تاريخ بداية التدريب"
                     required
                   />
@@ -96,10 +182,16 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                   </label>
                   <input
                     type="date"
-                    name="dateFinFormation"
+                    name="dateFin2"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.dateFinFormation2 || ""}
+                    value={selectedValue.dateFin2 || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        dateFin2: e.target.value || "",
+                      })
+                    }
                     placeholder="تاريخ نهاية التدريب"
                     required
                   />
@@ -111,11 +203,22 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                     </label>
                     <select
                       name="region"
+                      onChange={(value) => {
+                        setselectedRegion({
+                          ...selectedRegion,
+                          id: Number(value.target.value),
+                          name: value.target.value.toString(),
+                        });
+                      }}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option selected>الجهة </option>
+                      <option selected>
+                        {selectedValue.province2?.region.name}
+                      </option>
 
-                      <option value="test">test</option>
+                      {regions?.map((region) => (
+                        <option value={region.id}>{region.name}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -125,12 +228,23 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                       الإقليم
                     </label>
                     <select
-                      name="province"
+                      name="province2"
+                      onChange={(e) =>
+                        setselectedValue({
+                          ...selectedValue,
+                          province2:
+                            provinces?.find(
+                              (item) => item.id === Number(e.target.value)
+                            ) || undefined,
+                        })
+                      }
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option selected>الإقليم </option>
+                      <option selected>{selectedValue.province2?.name}</option>
 
-                      <option value="a">test</option>
+                      {provinces?.map((province) => (
+                        <option value={province.id}>{province.name}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -145,10 +259,16 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                   </label>
                   <input
                     type="date"
-                    name="dateDebutFormation"
+                    name="dateDebut3"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.dateDebutFormation3 || ""}
+                    value={selectedValue.dateDebut3 || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        dateDebut3: e.target.value || "",
+                      })
+                    }
                     placeholder="تاريخ بداية التدريب"
                     required
                   />
@@ -159,10 +279,16 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                   </label>
                   <input
                     type="date"
-                    name="dateFinFormation"
+                    name="dateFin3"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.dateFinFormation3 || ""}
+                    value={selectedValue.dateFin3 || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        dateFin3: e.target.value || "",
+                      })
+                    }
                     placeholder="تاريخ نهاية التدريب"
                     required
                   />
@@ -174,11 +300,22 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                     </label>
                     <select
                       name="region"
+                      onChange={(value) => {
+                        setselectedRegion({
+                          ...selectedRegion,
+                          id: Number(value.target.value),
+                          name: value.target.value.toString(),
+                        });
+                      }}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option selected>الجهة </option>
+                      <option selected>
+                        {selectedValue.province3?.region.name}
+                      </option>
 
-                      <option value="test">test</option>
+                      {regions?.map((region) => (
+                        <option value={region.id}>{region.name}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -188,52 +325,24 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                       الإقليم
                     </label>
                     <select
-                      name="province"
+                      name="province3"
+                      onChange={(e) =>
+                        setselectedValue({
+                          ...selectedValue,
+                          province3:
+                            provinces?.find(
+                              (item) => item.id === Number(e.target.value)
+                            ) || undefined,
+                        })
+                      }
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
-                      <option selected>الإقليم </option>
+                      <option selected>{selectedValue.province3?.name}</option>
 
-                      <option value="a">test</option>
+                      {provinces?.map((province) => (
+                        <option value={province.id}>{province.name}</option>
+                      ))}
                     </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    تحميل الطلب
-                  </label>
-                  <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg
-                          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 20 16"
-                        >
-                          <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                          />
-                        </svg>
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="font-semibold">تحميل الطلب</span>{" "}
-                          drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          PDF
-                        </p>
-                      </div>
-                      <input
-                        id="dropzone-file"
-                        type="file"
-                        className="hidden"
-                        name="demande"
-                      />
-                    </label>
                   </div>
                 </div>
               </div>
@@ -245,7 +354,7 @@ const Formation = ({ apprenant }: { apprenant: Apprenant }) => {
                   تحديث المعلومات
                 </button>
                 <button
-                  type="button"
+                  type="submit"
                   className="text-red-600 inline-flex gap-2 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                 >
                   <svg

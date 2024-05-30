@@ -1,3 +1,5 @@
+"use client";
+
 import { FaHome } from "react-icons/fa";
 import { FaHandsHelping } from "react-icons/fa";
 import { BiSolidInstitution } from "react-icons/bi";
@@ -6,6 +8,7 @@ import { FaUserTie } from "react-icons/fa6";
 import { MdSwitchAccount } from "react-icons/md";
 import { TbLogout } from "react-icons/tb";
 import Link from "next/link";
+import { logout } from "../api";
 
 export function SideBar() {
   return (
@@ -42,7 +45,7 @@ export function SideBar() {
           <ul className="space-y-2 font-medium">
             <li>
               <Link
-                href="#"
+                href="/"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FaHome width={200} height={200} />
@@ -54,7 +57,7 @@ export function SideBar() {
 
             <li>
               <Link
-                href="#"
+                href="/apprenants"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FaUserFriends width={200} height={200} />
@@ -64,18 +67,7 @@ export function SideBar() {
               </Link>
             </li>
 
-            <li>
-              <Link
-                href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-              >
-                <MdSwitchAccount width={200} height={200} />
-                <span className="flex-1 ms-3 whitespace-nowrap">
-                  حسابات المستخدمين
-                </span>
-              </Link>
-            </li>
-            <li>
+            <li onClick={logout}>
               <Link
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"

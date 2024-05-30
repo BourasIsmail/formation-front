@@ -1,12 +1,40 @@
-import { Apprenant } from "../data/apprenants";
+import { useState } from "react";
+import { Stagiaire } from "../type/Stagiaire";
+import { api } from "../api";
+import { toast } from "@/components/ui/use-toast";
 
-const Academic = ({ apprenant }: { apprenant: Apprenant }) => {
+const Academic = ({ stagiaire }: { stagiaire: Stagiaire }) => {
+  const [selectedValue, setselectedValue] = useState<Stagiaire>(stagiaire);
+  const handleSubmit = (e: any) => {
+    try {
+      e.preventDefault();
+      console.log(selectedValue);
+      const response = api
+        .put(`/stagiaire/updateAcademic/${selectedValue?.id}`, selectedValue)
+        .then((res) => {
+          console.log(response);
+        });
+      toast({
+        description: "تم تحديث البيانات بنجاح",
+        className: "bg-green-500 text-white",
+        duration: 3000,
+        title: "نجاح",
+      });
+    } catch (error) {
+      toast({
+        description: "اسم مستخدم أو كلمة مرور غير صحيحة",
+        variant: "destructive",
+        duration: 3000,
+        title: "خطأ",
+      });
+    }
+  };
   return (
     <>
       <div className="p-2 border-2 border-gray-200 rounded-lg dark:border-gray-700">
         <section className="bg-white dark:bg-gray-900">
           <div className=" px-4 py-2 mx-auto lg:py-2">
-            <form>
+            <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-2 gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                 <div className="w-full">
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -17,7 +45,13 @@ const Academic = ({ apprenant }: { apprenant: Apprenant }) => {
                     name="nomUniversite"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.nomUniversite || ""}
+                    value={selectedValue.nomUniversite || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        nomUniversite: e.target.value || "",
+                      })
+                    }
                     placeholder="اسم الجامعة"
                     required
                   />
@@ -31,7 +65,13 @@ const Academic = ({ apprenant }: { apprenant: Apprenant }) => {
                     name="adresseUniversite"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.adresseUniversite || ""}
+                    value={selectedValue.adresseUniversite || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        adresseUniversite: e.target.value || "",
+                      })
+                    }
                     placeholder="مكان الجامعة"
                     required
                   />
@@ -46,7 +86,13 @@ const Academic = ({ apprenant }: { apprenant: Apprenant }) => {
                     name="specialite"
                     id=""
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                    value={apprenant.specialite || ""}
+                    value={selectedValue.specialite || ""}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        specialite: e.target.value || "",
+                      })
+                    }
                     placeholder="اسم الشعبة"
                     required
                   />
@@ -60,8 +106,14 @@ const Academic = ({ apprenant }: { apprenant: Apprenant }) => {
                       id="red-radio"
                       type="radio"
                       value="true"
-                      checked={apprenant.assure ? true : false}
-                      name="colored-radio"
+                      checked={selectedValue.assure ? true : false}
+                      name="assure"
+                      onChange={(e) =>
+                        setselectedValue({
+                          ...selectedValue,
+                          assure: e.target.value == "true" ? true : false,
+                        })
+                      }
                       className="w-4 h-4  bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -73,53 +125,18 @@ const Academic = ({ apprenant }: { apprenant: Apprenant }) => {
                       id="green-radio"
                       type="radio"
                       value="false"
-                      checked={!apprenant.assure ? true : false}
-                      name="colored-radio"
+                      checked={selectedValue.assure ? true : false}
+                      onChange={(e) =>
+                        setselectedValue({
+                          ...selectedValue,
+                          assure: e.target.value == "true" ? true : false,
+                        })
+                      }
+                      name="assure"
                       className="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       لا
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    تحميل وصل التأمين
-                  </label>
-                  <div className="flex items-center justify-center w-full">
-                    <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg
-                          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 20 16"
-                        >
-                          <path
-                            stroke="currentColor"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                          />
-                        </svg>
-                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                          <span className="font-semibold">
-                            تحميل وصل التأمين
-                          </span>{" "}
-                          drag and drop
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          PDF
-                        </p>
-                      </div>
-                      <input
-                        id="dropzone-file"
-                        type="file"
-                        className="hidden"
-                        name="attestationsAssurance"
-                      />
                     </label>
                   </div>
                 </div>
@@ -132,7 +149,7 @@ const Academic = ({ apprenant }: { apprenant: Apprenant }) => {
                   تحديث المعلومات
                 </button>
                 <button
-                  type="button"
+                  type="submit"
                   className="text-red-600 inline-flex gap-2 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
                 >
                   <svg

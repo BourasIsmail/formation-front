@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Rubik } from "next/font/google";
 import ReactQueryProvider from "./components/ReactQueryProvider";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 const font = Rubik({
@@ -11,7 +12,7 @@ const font = Rubik({
 
 export const metadata: Metadata = {
   title: "منصة تتبع التدريب الميداني",
-  description: " تتبع التدريب الميداني",
+  description: "تتبع التدريب الميداني",
 };
 
 export default function RootLayout({
@@ -22,7 +23,10 @@ export default function RootLayout({
   return (
     <ReactQueryProvider>
       <html lang="ar" dir="rtl">
-        <body className={font.className}>{children}</body>
+        <body className={font.className}>
+          {children}
+          <Toaster />
+        </body>
       </html>
     </ReactQueryProvider>
   );

@@ -1,11 +1,11 @@
 import axios from "axios";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
-import { jwtDecode } from "jwt-decode";
-import { UserInfo } from "../type/UserInfo";
 
 const client = axios.create({
-  //baseURL: "http://154.144.246.177:8082",
   baseURL: "http://localhost:8080",
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 client.interceptors.response.use(
@@ -13,13 +13,11 @@ client.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       console.log("error 401");
-    } else if (error.response.status === 400) {
-      console.log("error 400");
-    } else if (error.response.status === 403) {
+    }
+    if (error.response.status === 403) {
       console.log("error 403");
-      console.log(error.response.data);
-      //deleteCookie("token");
-      //window.location.href = "/login";
+      deleteCookie("token");
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
@@ -38,13 +36,19 @@ client.interceptors.request.use(
 );
 export const api = client;
 
-export async function getUser(id: number) {
-  try {
-    const response = await api.get(`/auth/getUsers/${id}`);
-    return response.data as UserInfo;
-  } catch (error) {
-    console.log(error);
-  }
+export function getStagiaires() {
+  return async () => {
+    // TODO checks and params to all custom hooks
+
+    const token = getCookie("token");
+    console.log(token);
+    const { data } = await api.get("/stagiaire/all", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data;
+  };
 }
 
 export function getUsers() {
@@ -62,18 +66,16 @@ const tokenPayload = async () => {
   const token = await getCookie("token");
   if (!token) return null;
   const payload = token?.split(".")[1];
-  console.log(payload);
-  const decoded = jwtDecode(token);
-  console.log(decoded);
-
-  return decoded?.sub;
+  const decodedPayload = await atob(payload);
+  const tokenPay = JSON.parse(decodedPayload);
+  return tokenPay?.sub;
 };
 export function getCurrentUser() {
   return async () => {
-    const userName = await tokenPayload();
-    if (!userName) return null;
+    const email = await tokenPayload();
+    if (!email) return null;
     const token = getCookie("token");
-    const { data } = await api.get("/auth/User/" + userName, {
+    const { data } = await api.get("/auth/email/" + email, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -82,7 +84,6 @@ export function getCurrentUser() {
   };
 }
 
-// Logout function
 export const logout = async () => {
   deleteCookie("token"); // Delete token cookie
   // Additional logic for clearing user data, redirecting, etc.

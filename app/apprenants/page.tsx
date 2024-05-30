@@ -1,3 +1,5 @@
+"use client";
+
 import { SideBar } from "../components/SideBar";
 import { BreadCrumb } from "../components/BreadCrumb";
 import { DataTable } from "@/components/ui/data-table";
@@ -7,13 +9,9 @@ import { getAllStagiaires, getStagiaires } from "../api/stagiaire";
 import { useQuery } from "react-query";
 import { Stagiaire } from "../type/Stagiaire";
 
-async function getData(): Promise<Stagiaire[]> {
-  // Fetch data from your API here.
-  return await getStagiaires();
-}
+export default function Home() {
+  const { data } = useQuery<Stagiaire[]>("stagiaires", getAllStagiaires);
 
-export default async function () {
-  const data = await getData();
   return (
     <>
       <SideBar />
@@ -21,7 +19,7 @@ export default async function () {
         <BreadCrumb />
         <h1 className="text-2xl font-bold mb-4 py-2">لائحة المتدربين</h1>
         <div className="p-2 border-2 border-gray-200 rounded-lg dark:border-gray-700">
-          <DataTable columns={columns} data={data} />
+          <DataTable columns={columns} data={data || []} />
         </div>
       </main>
     </>
