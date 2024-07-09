@@ -21,7 +21,13 @@ export const BreadCrumb = () => {
       case "/":
         return "الصفحة الرئيسية";
       case "apprenants":
+        return "لائحة الطلبات";
+      case "stagiaires":
         return "لائحة المتدربين";
+      case "comptes":
+        return "لائحة الحسابات";
+      case "addCompte":
+        return "إضافة الحسابات";
       default:
         return path;
     }

@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader";
-import { Stagiaire } from "../type/Stagiaire";
 import Link from "next/link";
 import { useQueryClient } from "react-query";
 import { useState } from "react";
@@ -28,28 +27,29 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { api } from "../api";
+import { StagiaireConf } from "../type/StagiaireConf";
 
-export const columns: ColumnDef<Stagiaire>[] = [
+export const columns: ColumnDef<StagiaireConf>[] = [
   {
-    accessorKey: "nomAr",
+    accessorKey: "stagiaire.nomAr",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="الاسم العائلي" />
     ),
   },
   {
-    accessorKey: "prenomAr",
+    accessorKey: "stagiaire.prenomAr",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="الاسم الشخصي" />
     ),
   },
   {
-    accessorKey: "email",
+    accessorKey: "stagiaire.email",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="البريد الإلكتروني" />
     ),
   },
   {
-    accessorKey: "cin",
+    accessorKey: "stagiaire.cin",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -58,7 +58,7 @@ export const columns: ColumnDef<Stagiaire>[] = [
     ),
   },
   {
-    accessorKey: "nomUniversite",
+    accessorKey: "stagiaire.nomUniversite",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="اسم الجامعة" />
     ),
@@ -69,7 +69,7 @@ export const columns: ColumnDef<Stagiaire>[] = [
       const stagiaire = row.original;
       const queryClient = useQueryClient();
       const deleteStagiaire = async () => {
-        const res = api.delete(`/stagiaire/delete/${stagiaire.id}`);
+        const res = api.delete(`/stagiaireConf/${stagiaire.id}`);
         console.log(res);
         queryClient.invalidateQueries("stagiaires");
       };
@@ -87,7 +87,7 @@ export const columns: ColumnDef<Stagiaire>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent className="text-right" align="end">
               <DropdownMenuLabel>الوظائف</DropdownMenuLabel>
-              <Link href={stagiaire.id ? `/apprenants/${stagiaire.id}` : `#`}>
+              <Link href={stagiaire.id ? `/stagiaires/${stagiaire.id}` : `#`}>
                 <DropdownMenuItem>تفاصيل المتدرب</DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />

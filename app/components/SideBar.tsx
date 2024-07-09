@@ -8,9 +8,21 @@ import { FaUserTie } from "react-icons/fa6";
 import { MdSwitchAccount } from "react-icons/md";
 import { TbLogout } from "react-icons/tb";
 import Link from "next/link";
-import { logout } from "../api";
+import { getCurrentUser, logout } from "../api";
+import { IoDocumentTextSharp } from "react-icons/io5";
+import { useState } from "react";
+import { UserInfo } from "../type/UserInfo";
+import { useQuery } from "react-query";
 
 export function SideBar() {
+  const [user, setUser] = useState<UserInfo>();
+
+  useQuery("currentUser", getCurrentUser(), {
+    onSuccess: (data) => {
+      setUser(data);
+    },
+  });
+
   return (
     <>
       <button
@@ -55,9 +67,22 @@ export function SideBar() {
               </Link>
             </li>
 
+            {user?.roles === "ADMIN_ROLES" && (
+              <li>
+                <Link
+                  href="/apprenants"
+                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                >
+                  <IoDocumentTextSharp width={200} height={200} />
+                  <span className="flex-1 ms-3 whitespace-nowrap">
+                    لائحة الطلبات
+                  </span>
+                </Link>
+              </li>
+            )}
             <li>
               <Link
-                href="/apprenants"
+                href="/stagiaires"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FaUserFriends width={200} height={200} />
@@ -66,6 +91,20 @@ export function SideBar() {
                 </span>
               </Link>
             </li>
+
+            {user?.roles === "ADMIN_ROLES" && (
+              <li>
+                <Link
+                  href="/comptes"
+                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                >
+                  <FaUserTie width={200} height={200} />
+                  <span className="flex-1 ms-3 whitespace-nowrap">
+                    لائحة الحسابات
+                  </span>
+                </Link>
+              </li>
+            )}
 
             <li onClick={logout}>
               <Link

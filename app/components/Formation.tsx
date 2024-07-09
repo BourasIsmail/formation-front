@@ -10,17 +10,41 @@ import { getALLRegions } from "../api/region";
 
 const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
   const [selectedValue, setselectedValue] = useState<Stagiaire>(stagiaire);
-  const [selectedRegion, setselectedRegion] = useState<Region>();
+  const [selectedRegion1, setselectedRegion1] = useState<Region>();
+  const [selectedRegion2, setselectedRegion2] = useState<Region>();
+  const [selectedRegion3, setselectedRegion3] = useState<Region>();
 
-  const { data: regions } = useQuery({
-    queryKey: ["regions"],
+  const { data: regions1 } = useQuery({
+    queryKey: ["regions1"],
     queryFn: () => getALLRegions(),
   });
 
-  const { data: provinces } = useQuery({
+  const { data: regions2 } = useQuery({
+    queryKey: ["regions3"],
+    queryFn: () => getALLRegions(),
+  });
+
+  const { data: regions3 } = useQuery({
+    queryKey: ["regions3"],
+    queryFn: () => getALLRegions(),
+  });
+
+  const { data: provinces1 } = useQuery({
     queryKey: ["provinces"],
-    queryFn: () => getProvinceByRegion(selectedRegion?.id as number),
-    enabled: !!selectedRegion?.id,
+    queryFn: () => getProvinceByRegion(selectedRegion1?.id as number),
+    enabled: !!selectedRegion1?.id,
+  });
+
+  const { data: provinces2 } = useQuery({
+    queryKey: ["provinces"],
+    queryFn: () => getProvinceByRegion(selectedRegion2?.id as number),
+    enabled: !!selectedRegion2?.id,
+  });
+
+  const { data: provinces3 } = useQuery({
+    queryKey: ["provinces"],
+    queryFn: () => getProvinceByRegion(selectedRegion3?.id as number),
+    enabled: !!selectedRegion3?.id,
   });
 
   const handleSubmit = (e: any) => {
@@ -105,10 +129,10 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                       الجهة
                     </label>
                     <select
-                      name="region"
+                      name="region1"
                       onChange={(value) => {
-                        setselectedRegion({
-                          ...selectedRegion,
+                        setselectedRegion1({
+                          ...selectedRegion1,
                           id: Number(value.target.value),
                           name: value.target.value.toString(),
                         });
@@ -119,7 +143,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         {selectedValue.province1?.region.name}
                       </option>
 
-                      {regions?.map((region) => (
+                      {regions1?.map((region) => (
                         <option value={region.id}>{region.name}</option>
                       ))}
                     </select>
@@ -136,7 +160,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         setselectedValue({
                           ...selectedValue,
                           province1:
-                            provinces?.find(
+                            provinces1?.find(
                               (item) => item.id === Number(e.target.value)
                             ) || undefined,
                         })
@@ -145,7 +169,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                     >
                       <option selected>{selectedValue.province1?.name}</option>
 
-                      {provinces?.map((province) => (
+                      {provinces1?.map((province) => (
                         <option value={province.id}>{province.name}</option>
                       ))}
                     </select>
@@ -204,8 +228,8 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                     <select
                       name="region"
                       onChange={(value) => {
-                        setselectedRegion({
-                          ...selectedRegion,
+                        setselectedRegion2({
+                          ...selectedRegion2,
                           id: Number(value.target.value),
                           name: value.target.value.toString(),
                         });
@@ -216,7 +240,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         {selectedValue.province2?.region.name}
                       </option>
 
-                      {regions?.map((region) => (
+                      {regions2?.map((region) => (
                         <option value={region.id}>{region.name}</option>
                       ))}
                     </select>
@@ -233,7 +257,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         setselectedValue({
                           ...selectedValue,
                           province2:
-                            provinces?.find(
+                            provinces2?.find(
                               (item) => item.id === Number(e.target.value)
                             ) || undefined,
                         })
@@ -242,7 +266,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                     >
                       <option selected>{selectedValue.province2?.name}</option>
 
-                      {provinces?.map((province) => (
+                      {provinces2?.map((province) => (
                         <option value={province.id}>{province.name}</option>
                       ))}
                     </select>
@@ -301,8 +325,8 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                     <select
                       name="region"
                       onChange={(value) => {
-                        setselectedRegion({
-                          ...selectedRegion,
+                        setselectedRegion3({
+                          ...selectedRegion3,
                           id: Number(value.target.value),
                           name: value.target.value.toString(),
                         });
@@ -313,7 +337,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         {selectedValue.province3?.region.name}
                       </option>
 
-                      {regions?.map((region) => (
+                      {regions3?.map((region) => (
                         <option value={region.id}>{region.name}</option>
                       ))}
                     </select>
@@ -330,7 +354,7 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         setselectedValue({
                           ...selectedValue,
                           province3:
-                            provinces?.find(
+                            provinces3?.find(
                               (item) => item.id === Number(e.target.value)
                             ) || undefined,
                         })
@@ -339,11 +363,31 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                     >
                       <option selected>{selectedValue.province3?.name}</option>
 
-                      {provinces?.map((province) => (
+                      {provinces3?.map((province) => (
                         <option value={province.id}>{province.name}</option>
                       ))}
                     </select>
                   </div>
+                </div>
+                <div className="w-full">
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    مدة التدريب بالأيام
+                  </label>
+                  <input
+                    type="number"
+                    name="dureeStage"
+                    id=""
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    value={selectedValue?.dureeStage || ""}
+                    placeholder=" "
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        dureeStage: Number(e.target.value || 0),
+                      })
+                    }
+                    required
+                  />
                 </div>
               </div>
               <div className="flex justify-start items-end gap-3">
@@ -352,24 +396,6 @@ const Formation = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                   className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
                 >
                   تحديث المعلومات
-                </button>
-                <button
-                  type="submit"
-                  className="text-red-600 inline-flex gap-2 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
-                >
-                  <svg
-                    className="w-5 h-5 mr-1 -ml-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                  حذف المتدرب
                 </button>
               </div>
             </form>

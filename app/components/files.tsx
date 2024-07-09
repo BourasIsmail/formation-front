@@ -3,20 +3,22 @@ import { Stagiaire } from "../type/Stagiaire";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "../api";
 import { FaFileDownload } from "react-icons/fa";
+import { StagiaireConf } from "../type/StagiaireConf";
 
-const FileComponent = ({ stagiaire }: { stagiaire: Stagiaire }) => {
-  const [selectedValue, setselectedValue] = useState<Stagiaire>(stagiaire);
+const Files = ({ stagiaire }: { stagiaire: StagiaireConf }) => {
+  const [selectedValue, setselectedValue] = useState<StagiaireConf>(stagiaire);
 
   const registerFile = (e: any) => {
     try {
       e.preventDefault();
       console.log(selectedValue);
       const fd = new FormData();
-      if (selectedValue?.demande) {
-        fd.append("file", selectedValue.demande);
+      if (selectedValue?.stagiaire?.demande) {
+        fd.append("file1", selectedValue.stagiaire.demande);
+        fd.append("file2", selectedValue.rapport || "");
       }
       const response = api
-        .put(`/stagiaire/uploadDemande/${selectedValue?.id}`, fd, {
+        .put(`/stagiaireConf/uploadFiles/${selectedValue?.id}`, fd, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -51,9 +53,9 @@ const FileComponent = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                   <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     <div className="flex flex-row">
                       طلب موقع موجه إلى السيد مدير التعاون الوطني{" "}
-                      {selectedValue.fileNameDemande ? (
+                      {selectedValue.stagiaire?.fileNameDemande ? (
                         <a
-                          href={`http://localhost:8080/stagiaire/downloadDemande/${selectedValue.id}`}
+                          href={`http://localhost:8080/stagiaire/downloadDemande/${selectedValue.stagiaire.id}`}
                           className="text-blue-500"
                         >
                           <FaFileDownload />
@@ -81,7 +83,7 @@ const FileComponent = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         </svg>
                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                           <span className="font-semibold">
-                            {selectedValue.fileNameDemande}
+                            {selectedValue.stagiaire?.fileNameDemande}
                             تحميل الطلب
                           </span>{" "}
                           drag and drop
@@ -96,8 +98,11 @@ const FileComponent = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                         onChange={(e) =>
                           setselectedValue({
                             ...selectedValue,
-                            demande: e.target.files?.[0] || null,
-                            fileNameDemande: e.target.files?.[0].name || "",
+                            stagiaire: {
+                              ...selectedValue.stagiaire,
+                              demande: e.target.files?.[0] || null,
+                              fileNameDemande: e.target.files?.[0].name || "",
+                            },
                           })
                         }
                         className="hidden"
@@ -106,7 +111,67 @@ const FileComponent = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                     </label>
                   </div>
                 </div>
+                <div>
+                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    <div className="flex flex-row">
+                      التقرير الخاص بفترة التدريب{" "}
+                      {selectedValue.rapport ? (
+                        <a
+                          href={`http://localhost:8080/stagiaireConf/downloadRapport/${selectedValue.id}`}
+                          className="text-blue-500"
+                        >
+                          <FaFileDownload />
+                        </a>
+                      ) : null}
+                    </div>
+                  </label>
+                  <div className="flex items-center justify-center w-full">
+                    <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg
+                          className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 20 16"
+                        >
+                          <path
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                          />
+                        </svg>
+                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">
+                            {selectedValue.fileNameRapport}
+                            تحميل التقرير الخاص بفترة التدريب
+                          </span>{" "}
+                          drag and drop
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          PDF
+                        </p>
+                      </div>
+                      <input
+                        id="dropzone-file"
+                        type="file"
+                        onChange={(e) =>
+                          setselectedValue({
+                            ...selectedValue,
+                            rapport: e.target.files?.[0] || null || undefined,
+                            fileNameRapport: e.target.files?.[0].name || "",
+                          })
+                        }
+                        className="hidden"
+                        name="rapport"
+                      />
+                    </label>
+                  </div>
+                </div>
               </div>
+
               <div className="flex justify-start items-end gap-3">
                 <button
                   type="submit"
@@ -123,4 +188,4 @@ const FileComponent = ({ stagiaire }: { stagiaire: Stagiaire }) => {
   );
 };
 
-export default FileComponent;
+export default Files;

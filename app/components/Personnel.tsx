@@ -4,9 +4,22 @@ import { useState } from "react";
 import { Stagiaire } from "../type/Stagiaire";
 import { api } from "../api";
 import { toast } from "@/components/ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
 const Personnel = ({ stagiaire }: { stagiaire: Stagiaire }) => {
   const [selectedValue, setselectedValue] = useState<Stagiaire>(stagiaire);
+  const [open, setopen] = useState(false);
 
   const handleSubmit = (e: any) => {
     try {
@@ -32,6 +45,31 @@ const Personnel = ({ stagiaire }: { stagiaire: Stagiaire }) => {
       });
     }
   };
+  const router = useRouter();
+
+  const confirmRequest = () => {
+    try {
+      const response = api
+        .post(`/stagiaireConf/addStagiaire/${selectedValue?.id}`)
+        .then((res) => {
+          console.log(response);
+          router.push(`/stagiaires/${res?.data?.id}`);
+        });
+      toast({
+        description: "تم تأكيد الطلب بنجاح",
+        className: "bg-green-500 text-white",
+        duration: 3000,
+        title: "نجاح",
+      });
+    } catch (error) {
+      toast({
+        description: "اسم مستخدم أو كلمة مرور غير صحيحة",
+        variant: "destructive",
+        duration: 3000,
+        title: "خطأ",
+      });
+    }
+  };
 
   return (
     <div className="p-2 border-2 border-gray-200 rounded-lg dark:border-gray-700">
@@ -41,19 +79,19 @@ const Personnel = ({ stagiaire }: { stagiaire: Stagiaire }) => {
             <div className="grid grid-cols-2 gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  الاسم العائلي
+                  الإسم العائلي باللغة العربية
                 </label>
                 <input
                   type="text"
-                  name="nom"
+                  name="nomAr"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.nom || ""}
-                  placeholder="الاسم العائلي"
+                  value={selectedValue?.nomAr || ""}
+                  placeholder="الإسم العائلي باللغة العربية"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      nom: e.target.value || "",
+                      nomAr: e.target.value || "",
                     })
                   }
                   required
@@ -61,25 +99,64 @@ const Personnel = ({ stagiaire }: { stagiaire: Stagiaire }) => {
               </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  الاسم الشخصي
+                  الإسم الشخصي باللغة العربية
                 </label>
                 <input
                   type="text"
-                  name="prenom"
+                  name="prenomAr"
                   id=""
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={selectedValue?.prenom || ""}
-                  placeholder="الاسم الشخصي"
+                  value={selectedValue?.prenomAr || ""}
+                  placeholder="الإسم الشخصي باللغة العربية"
                   onChange={(e) =>
                     setselectedValue({
                       ...selectedValue,
-                      prenom: e.target.value || "",
+                      prenomAr: e.target.value || "",
                     })
                   }
                   required
                 />
               </div>
-
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  الإسم العائلي باللغة الفرنسية
+                </label>
+                <input
+                  type="text"
+                  name="nomFr"
+                  id=""
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={selectedValue?.nomFr || ""}
+                  placeholder="الإسم العائلي باللغة الفرنسية"
+                  onChange={(e) =>
+                    setselectedValue({
+                      ...selectedValue,
+                      nomFr: e.target.value || "",
+                    })
+                  }
+                  required
+                />
+              </div>
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  الإسم الشخصي باللغة الفرنسية
+                </label>
+                <input
+                  type="text"
+                  name="prenomFr"
+                  id=""
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={selectedValue?.prenomFr || ""}
+                  placeholder="الإسم الشخصي باللغة الفرنسية"
+                  onChange={(e) =>
+                    setselectedValue({
+                      ...selectedValue,
+                      prenomFr: e.target.value || "",
+                    })
+                  }
+                  required
+                />
+              </div>
               <div className="w-full">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   العنوان الشخصي
@@ -180,6 +257,69 @@ const Personnel = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                   required
                 />
               </div>
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  الجنس
+                </label>
+                <div className="flex items-center me-4">
+                  <input
+                    id="red-radio"
+                    type="radio"
+                    value="homme"
+                    checked={selectedValue?.sexe === "homme" ? true : false}
+                    name="sexe"
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        sexe: e.target.value || "",
+                      })
+                    }
+                    className="w-4 h-4  bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    ذكر
+                  </label>
+                </div>
+                <div className="flex items-center me-4">
+                  <input
+                    id="green-radio"
+                    type="radio"
+                    value="femme"
+                    checked={selectedValue?.sexe === "femme" ? true : false}
+                    onChange={(e) =>
+                      setselectedValue({
+                        ...selectedValue,
+                        sexe: e.target.value || "",
+                      })
+                    }
+                    name="sexe"
+                    className="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    أنثى
+                  </label>
+                </div>
+              </div>
+              <div className="w-full">
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                  رقم الهاتف
+                </label>
+                <input
+                  type="tel"
+                  name="telephone"
+                  id=""
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  value={selectedValue?.telephone || ""}
+                  placeholder="رقم الهاتف"
+                  onChange={(e) =>
+                    setselectedValue({
+                      ...selectedValue,
+                      telephone: e.target.value || "",
+                    })
+                  }
+                  required
+                />
+              </div>
             </div>
             <div className="flex justify-start items-end gap-3">
               <button
@@ -189,23 +329,31 @@ const Personnel = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                 تحديث المعلومات
               </button>
               <button
-                type="submit"
-                className="text-red-600 inline-flex gap-2 items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                type="button"
+                onClick={() => setopen(true)}
+                className="text-green-600 inline-flex gap-2 items-center hover:text-white border border-green-600 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
               >
-                <svg
-                  className="w-5 h-5 mr-1 -ml-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                حذف المتدرب
+                تأكيد الطلب
               </button>
+              <div>
+                <AlertDialog open={open} onOpenChange={setopen}>
+                  <AlertDialogTrigger asChild></AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>هل أنت متأكد تمامًا؟</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        ههذا الإجراء سيقوم بالموافقة على الطلب
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="gap-8">
+                      <AlertDialogCancel>إلغاء</AlertDialogCancel>
+                      <AlertDialogAction onClick={confirmRequest}>
+                        متابعة
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
           </form>
         </div>

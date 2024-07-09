@@ -1,5 +1,6 @@
 import axios from "axios";
 import { setCookie, getCookie, deleteCookie } from "cookies-next";
+import { UserInfo } from "../type/UserInfo";
 
 const client = axios.create({
   baseURL: "http://localhost:8080",
@@ -89,3 +90,12 @@ export const logout = async () => {
   // Additional logic for clearing user data, redirecting, etc.
   window.location.href = "/login";
 };
+
+export async function getUser(id: number) {
+  try {
+    const response = await api.get(`/auth/getUser/${id}`);
+    return response.data as UserInfo;
+  } catch (error) {
+    console.log(error);
+  }
+}
