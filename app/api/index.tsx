@@ -3,7 +3,7 @@ import { setCookie, getCookie, deleteCookie } from "cookies-next";
 import { UserInfo } from "../type/UserInfo";
 
 const client = axios.create({
-  baseURL: "http://172.16.20.44:81",
+  baseURL: "http://154.144.246.177:8041",
   headers: {
     "Content-Type": "application/json",
   },
