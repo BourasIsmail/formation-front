@@ -55,7 +55,7 @@ const Files = ({ stagiaire }: { stagiaire: StagiaireConf }) => {
                       طلب موقع موجه إلى السيد مدير التعاون الوطني{" "}
                       {selectedValue.stagiaire?.fileNameDemande ? (
                         <a
-                          href={`http://localhost:8080/stagiaire/downloadDemande/${selectedValue.stagiaire.id}`}
+                          href={`http://154.144.246.177:8041/stagiaire/downloadDemande/${selectedValue.stagiaire.id}`}
                           className="text-blue-500"
                         >
                           <FaFileDownload />
