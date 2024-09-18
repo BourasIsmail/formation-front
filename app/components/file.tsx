@@ -53,7 +53,7 @@ const FileComponent = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                       طلب موقع موجه إلى السيد مدير التعاون الوطني{" "}
                       {selectedValue.fileNameDemande ? (
                         <a
-                          href={`http://localhost:8080/stagiaire/downloadDemande/${selectedValue.id}`}
+                          href={`http://154.144.246.177:8041/stagiaire/downloadDemande/${selectedValue.id}`}
                           className="text-blue-500"
                         >
                           <FaFileDownload />

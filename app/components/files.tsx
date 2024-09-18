@@ -117,7 +117,7 @@ const Files = ({ stagiaire }: { stagiaire: StagiaireConf }) => {
                       التقرير الخاص بفترة التدريب{" "}
                       {selectedValue.rapport ? (
                         <a
-                          href={`http://localhost:8080/stagiaireConf/downloadRapport/${selectedValue.id}`}
+                          href={`http://154.144.246.177:8041/stagiaireConf/downloadRapport/${selectedValue.id}`}
                           className="text-blue-500"
                         >
                           <FaFileDownload />
