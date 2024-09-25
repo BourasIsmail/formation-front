@@ -76,8 +76,8 @@ const Academic = ({ stagiaire }: { stagiaire: Stagiaire }) => {
                   >
                     <option selected>إختر المستوى</option>
                     <option value="إجازة">إجازة</option>
-                    <option value="ماستر">باكالوريا +2</option>
-                    <option value="دكتوراه">باكالوريا +4</option>
+                    <option value="باكالوريا +2">باكالوريا +2</option>
+                    <option value="باكالوريا +4">باكالوريا +4</option>
                     <option value="ماستر">ماستر</option>
                   </select>
                 </div>
